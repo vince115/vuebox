@@ -13,10 +13,12 @@ const boxStore = useBoxStore()
     Hello world!
   </h1>
   <div>Store: {{ userStore.fullName }}</div>
-  <div>Store: {{ boxStore.xyPosition}}</div>
+  
+  <div> x: {{ boxStore.xyPosition.x.x}}</div>
+  <div> y: {{ boxStore.xyPosition.y.y}}</div>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/boxx">Boxx</router-link> | 
+    <router-link to="/box">Box</router-link> | 
     <router-link to="/user">User</router-link>
   </div>
   <router-view />

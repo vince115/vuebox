@@ -4,12 +4,13 @@ import { ref } from 'vue'
 import { useDraggable } from '@vueuse/core'
 
 const el = ref()
-const { x , y, style } = useDraggable(el, {
-  initialValue: { x: 40, y: 40 },
+const {x, y, style } = useDraggable(el, {
+  initialValue: { x: 40, y: 41 }
 })
 const boxStore = useBoxStore()
 boxStore.updateBox({x},{y})
 </script>
+
 
 <template>
   <div ref="el" :style="style" style="position: fixed" class="boxs text-green-500 bg-blue-100 rounded-tr-lg rounded-br-lg rounded-bl-lg w-28 h-28">
