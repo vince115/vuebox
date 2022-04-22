@@ -4,7 +4,7 @@ import { ref } from 'vue'
 import { useDraggable } from '@vueuse/core'
 
 const el = ref()
-const { x, y, style } = useDraggable(el, {
+const { x , y, style } = useDraggable(el, {
   initialValue: { x: 40, y: 40 },
 })
 const boxStore = useBoxStore()

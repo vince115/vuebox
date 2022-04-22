@@ -24,7 +24,6 @@
     "typescript": "^4.5.4",
     "vite": "^2.9.5",
     "vue-tsc": "^0.34.7",
-    "vue3-draggable-resizable": "^1.6.1",
     "webpack": "^5.72.0"
   }
 }

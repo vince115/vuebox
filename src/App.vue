@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
-
 import { useUserStore } from './store/user'
-const userStore = useUserStore()
-
 import { useBoxStore } from './store/box'
+const userStore = useUserStore()
 const boxStore = useBoxStore()
 </script>
 

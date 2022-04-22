@@ -18,7 +18,7 @@ export const useBoxStore = defineStore({
 
   },
   actions: {
-    updateBox(x:Number, y:Number) {
+    updateBox(x:any , y:any) {
       this.x = x
       this.y = y
       //return [x,y]

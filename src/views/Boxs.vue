@@ -1,7 +1,6 @@
 
 <script setup lang="ts">
-import { mapState, mapActions } from 'pinia'
-import { useStore } from '../store'
+
 import { ref } from 'vue'
 import { useDraggable } from '@vueuse/core'
 

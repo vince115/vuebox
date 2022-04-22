@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { mapState, mapActions } from 'pinia'
-import { useStore } from '../store'
 </script>
    
 <template>
