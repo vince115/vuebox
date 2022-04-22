@@ -16,8 +16,6 @@ const boxStore = useBoxStore()
   <div>Store: {{ boxStore.xyPosition}}</div>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/boxs">Boxs</router-link> | 
-    <router-link to="/box">Box</router-link> | 
     <router-link to="/boxx">Boxx</router-link> | 
     <router-link to="/user">User</router-link>
   </div>
