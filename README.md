@@ -15,6 +15,7 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 
 You can learn more about Take Over mode [here](https://github.com/johnsoncodehk/volar/discussions/471).
 
+---
 
 ### 建置
 1. 套件安裝用 yarn 為主，不要混用 npm
