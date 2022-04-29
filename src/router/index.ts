@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
-import Boxxy from '../views/Boxxy.vue'
+import Login from '../views/Login.vue'
+import Box from '../views/Box.vue'
 import User from '../views/User.vue'
+import Test from '../views/Test.vue'
 const routes =[
     {
         path:'/',
@@ -9,16 +11,27 @@ const routes =[
         component: Home
     },
     {
+        path:'/login',
+        name:'Login',
+        component: Login
+    },
+    {
         path:'/box',
-        name:'Boxxy',
-        component: Boxxy
+        name:'Box',
+        component: Box
     },
     {
         path:'/user',
         name:'User',
         component: User
-    }
+    },
+    {
+        path:'/test',
+        name:'test',
+        component: Test
+    }   
 ]
+
 
 const router = createRouter({
     history: createWebHistory('/vuebox/'),

@@ -1,27 +1,32 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+import Navigation from './components/Navbar.vue'
 import { useUserStore } from './store/user'
 import { useBoxStore } from './store/box'
+import { useAuthStore } from './store/auth'
 const userStore = useUserStore()
 const boxStore = useBoxStore()
+const authStore = useAuthStore()
+
 </script>
 
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + TypeScript + Vite" />
-   <h1 class="text-3xl font-bold underline text-red-500">
-    Hello world!
-  </h1>
+
+  <Navigation msg="Hello Vue 3 + TypeScript + Vite" />
   <div>Store: {{ userStore.fullName }}</div>
-  
-  <div> x: {{ boxStore.xyPosition.x.x}}</div>
-  <div> y: {{ boxStore.xyPosition.y.y}}</div>
+  <div> x: {{ boxStore.xyPosition.x.x}}, y: {{ boxStore.xyPosition.y.y}}</div>
+  <div> Auth: {{authStore.isAuth}} </div>
+
+ 
+
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/box">Box</router-link> | 
-    <router-link to="/user">User</router-link>
+    <router-link to="/user">User</router-link> |   
+    <router-link to="/login">Login</router-link> |   
+    <router-link to="/test">Test</router-link>
   </div>
   <router-view />
+
 </template>
 
 <style>
@@ -31,6 +36,5 @@ const boxStore = useBoxStore()
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
