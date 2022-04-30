@@ -1,120 +1,40 @@
-<script lang="ts">
-import { useAuthStore } from '../store/auth'
-import { defineComponent, reactive } from 'vue'
+<script setup lang="ts">
+import { reactive ,ref } from 'vue'
+import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
-export default defineComponent({
-  name: 'Login',
-  data() {
-    return{
-        username: "",
-        password: "",
-    }
-  },
-  setup(){
-    // const initialState = {
-    //   username: "",
-    //   password: ""
-    // };
-    // const form = reactive({ ...initialState });
-    //
-  const form = reactive(
-  {
-    username: "",
-    password: "",
-  });
-    const authStore = useAuthStore();
-    console.log('form.username', form.username);
-   // console.log('username2',data);
-    const setStorageToken = (token) =>{
-      localStorage.setItem('token',token);
-    } 
-    const getTokenAuth = ()=>{
+import { useAuthStore } from '../store/auth'
+import { useErrorStore } from '../store/error'
 
-      if(localStorage.getItem('token')){
-      authStore.setAuth(true);
-      }
-    }
-   
-    //
-    const router = useRouter();
-    const goToHome = () =>{
-      router.push({
-        name:'Home'
-      });
-    }
-    //
-    const submitAuth = () => {
-      // 判斷帳密
-      console.log('form.username', form.username);
-      //console.log('username', username);
-      //axios
-      if (form.username === '' || form.password === ''){
-        alert('帳號或密碼不能為空');
-      } else {
-        axios({
-          method: 'post',
-          url: '/login',
-          data:{
-            username: form.username,
-            password: form.password
-          }
-        }).then(res => {
-          console.log(res.data);
-          //給token
+const form = ref({});
+const loading = ref(false);
+const router = useRouter();
+const error = useErrorStore();
 
-        }).catch(error => {
-          alert('賬號或密碼錯誤');
-          console.log(error);
-        });
-      }
+const onLoginSubmit =()=>{
+  useAuthStore()
+    .login(form.value)
+    .then(() => router.push({ name: "index" }))
+    .catch(() => (loading.value = !loading.value));
 
-      if(authStore.isAuth === true){
-        //成功登入 導入首頁
-        console.log('Login Success');
-        goToHome();
-      }else{
-        //NavigationGuards阻擋  回登入頁
-        console.log('Login Fail');
-      }
-
-    }
-
-    return {
-      form,
-      submitAuth,
-    }
-  }
-})
-
+    console.log('form',form)
+}
 </script>
-<template>
-  <div class="login" id="">
 
-  <form class="form">
-    <input type="text" id="username" placeholder="username" v-model="username"  autocomplete="username"/>
-    <input type="password" id="password" placeholder="password" v-model="password" autocomplete="current-password" />
-    <button type="submit" class="button" @click.prevent="submitAuth">login</button>
+<template>
+  <div class="login">
+  <form @submit.prevent="onLoginSubmit" class="form">
+    <input type="text" id="username" placeholder="username" v-model="form.username"  autocomplete="username"/>
+    <input type="password" id="password" placeholder="password" v-model="form.password" autocomplete="current-password" />
+    <button type="submit" class="button">login</button>
     <p class="message">Not registered? <a href="#">Create an account</a></p>
   </form>
-
   </div>
 </template>
 
-
-
-
-
-
-
-
-
-
 <style>
 button.button{
-  @apply px-4 py-2 m-0 text-white bg-cyan-500 rounded
+  @apply m-0 px-4 py-2 text-white bg-cyan-500 rounded
 }
-
 .form {
   position: relative;
   z-index: 1;
@@ -198,5 +118,4 @@ button.button{
 .container .info span .fa {
   color: #EF3B3A;
 }
-
 </style>

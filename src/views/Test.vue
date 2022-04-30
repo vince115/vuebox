@@ -38,6 +38,6 @@ export default defineComponent({
 
 <style>
 button.button{
-  @apply px-4 py-2 m-2 text-white bg-cyan-500 rounded
+  @apply m-0 px-4 py-2 text-white bg-cyan-500 rounded
 }
 </style>

@@ -1,25 +1,45 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
+import axios from 'axios';
 
 export const useAuthStore = defineStore({
-  id: "auth", // id必填，且需要唯一
+  id: "auth",
   state: () => {   
-    return { 
-        username: '', 
-        password: '',
-        isAuth: false,
-        token: '1234',
+    return {
+        isLogin: localStorage.getItem('token')?true:false,
+        user: null,
     }
   },
-  getters: {
-    getisAuth: (state) => state.isAuth,
-    getUser: (state) => state.username
-  },
+  getters: {},
   actions: {
-    setAuth(isAuth:boolean) {
-      this.isAuth = isAuth;
+    async login(params:object){
+      //get
+      await axios.get('api'); 
+      //post
+ 
+      console.log('params', params);
+      //let person = new Proxy({}, params);
+      //console.log('person.name', person.username);
+      const axiosResponse = await axios.post('api/login', params)
+      if (axiosResponse){
+        const token = `Bearer ${axiosResponse.token}`;
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common["Authorization"] = token;
+       
+      }
     },
-    setUser(user:any) {
-      this.user = user;
-    },  
-  },
+    async logout(){
+      //post
+      const axiosResponse = (await axios.post("api/logout")).data;
+      if (axiosResponse){
+        localStorage.removeItem("token");
+        this.$reset();
+      } 
+    },
+    async ftechUser() {
+      this.user = (await axios.get("api/me")).data;
+      this.loggedIn = true;
+    }  
+
+  }
+
 });
