@@ -11,9 +11,11 @@ const router = useRouter();
 const error = useErrorStore();
 
 const onLoginSubmit =()=>{
+loading.value = !loading.value;
+
   useAuthStore()
     .login(form.value)
-    .then(() => router.push({ name: "index" }))
+    .then(() => router.push({ name: "Home" }))
     .catch(() => (loading.value = !loading.value));
 
     console.log('form',form)

@@ -80,6 +80,7 @@ const service = axios.create({
     //获取token，并将其添加至请求头中
     let token = localStorage.getItem('token')
     if(token){
+      //localStorage.setItem('isLogin', true);
     //   config.headers.Authorization = `${token}`;
     }
     return config

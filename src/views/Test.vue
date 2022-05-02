@@ -8,7 +8,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
-  name: 'test',
+  name: 'testU',
   setup () {
     const handleLogin = () => {
       fetch('/login', {

@@ -1,34 +1,73 @@
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
+// import { ref } from 'vue'
+import { defineComponent } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../store/auth'
 
-defineProps<{ msg: string }>()
+// defineProps<{ msg: string }>()
+// const count = ref(0)
 
-const count = ref(0)
+export default defineComponent({
+  setup() {
+    let token = localStorage.getItem('token');
+    const router = useRouter();
+    const authStore = useAuthStore();
+
+    const onLogout=()=> {
+      console.log('onLogout');
+        localStorage.removeItem("isLogin");
+        localStorage.removeItem("token"); 
+        router.push({ name: "Login" });   
+   }
+
+
+            console.log('onNavLoad');
+            if(token){
+              console.log('has-token')
+              let isLogin = true;
+              localStorage.setItem('isLogin', true);
+              // authStore.updateLogin(true);
+
+              router.push({ name: "Login" });
+              
+            }else{
+              let isLogin = false;
+              router.push({ name: "Home" });
+            }
+
+    
+
+    return { onLogout };
+  }
+ })
+
 </script>
 
 
 <template>
-<nav class="nav-navbar"> 
+<nav class="nav-navbar" > 
  <div class="nav-container">
   <a href="https://flowbite.com" class="flex items-center">
       <span class="nav-title">VueBox</span>
   </a>
   <div class="flex md:order-2">
-      <button type="button" class="btn-logout">Logout</button>
+      <button type="button" v-if="isLogin" class="btn-login"><a href="login">Login</a></button>
+      <button type="button" v-if="!isLogin" @click.prevent="onLogout" class="btn-logout">Logout</button>
   </div>
+
   <div class="nav-items" id="mobile-menu-4">
     <ul class="nav-item-ul">
       <li>
-        <a href="#" class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white" aria-current="page">Home</a>
+        <a href="home" class="nav-item-li-a" >Home</a>
       </li>
       <li>
-        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+        <a href="box" class="nav-item-li-a">Box</a>
       </li>
       <li>
-        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+        <a href="user" class="nav-item-li-a">User</a>
       </li>
       <li>
-        <a href="#" class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+        <a href="test" class="nav-item-li-a">Test</a>
       </li>
     </ul>
   </div>
@@ -62,6 +101,15 @@ const count = ref(0)
     whitespace-nowrap 
     dark:text-white
 }
+button.btn-login{
+  @apply text-white
+  bg-cyan-600
+  px-5 
+  py-2.5 
+  text-center 
+  mr-3
+  rounded-lg 
+}
 button.btn-logout{
   @apply 
   text-white 
@@ -88,9 +136,15 @@ button.btn-logout{
   @apply hidden justify-between items-center w-full md:flex md:w-auto md:order-1
 }
 .nav-item-ul{
-    @apply flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium
+  @apply flex flex-col mt-4 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium
 }
-.nav-item-li{
+.nav-item-lia{
+  @apply block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 dark:text-white
+}
+
+.nav-item-li-a{
+@apply 
+block py-2 pr-4 pl-3 text-white  hover:text-yellow-300 focus:text-green-500
 
 }
 </style>
