@@ -5,30 +5,41 @@ export const useAuthStore = defineStore({
   id: "auth",
   state: () => {   
     return {
-         isLogin: localStorage.getItem('token')?true:false,
-        // isLogin: false,
-        user: null,
+        token: null,
+        username: '',
+        password: '',
+        isLogin: false
     }
   },
   getters: {
-    isLogin:(state) =>{
+    getToken:(state)=>{
+      return state.token
+    },
+    getIsLogin:(state) =>{
       return state.isLogin
     }
   },
   actions: {
+
     async login(params:object){
       //get
-      await axios.get('api'); 
-      
+      await axios.get('api');  
       //post
+      console.log('params',params);
       const axiosResponse = await axios.post('api/login', params)
-      //console.log('params',params)
+      
+      let myparams = JSON.parse(JSON.stringify(params))
+      console.log('params.username',myparams.username)
+      this.username = myparams.username
+      
       if (axiosResponse){
-        //const token = `${axiosResponse.token}`;   
-        console.log('axiosResponse',axiosResponse);  
-        //axiosResponse.headers.common["Authorization"] = token;
-       
+        //const token = `${axiosResponse.token}`;
+        console.log('axiosResponse',axiosResponse);
+        console.log('axiosResponse.isLogin',axiosResponse.data.isLogin);
+        this.isLogin = axiosResponse.data.isLogin
       }
+
+
     },
     async logout(){
       //post
@@ -39,13 +50,14 @@ export const useAuthStore = defineStore({
         this.$reset();
       } 
     },
-    async ftechUser() {
-      this.user = (await axios.get("api/me")).data;
-      this.loggedIn = true;
-    }, 
-    // updateLogin(state:any){
-    //   this.isLogin = state
-    // } 
+    // async ftechUser() {
+    //   this.user = (await axios.get("api/me")).data;
+    //   this.loggedIn = true;
+    // }, 
+    setIsLogin(state:any) {
+      this.state = state
+    }
+  
 
   }
 
