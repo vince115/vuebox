@@ -3,7 +3,6 @@
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "../store/auth";
-
 // defineProps<{ msg: string }>()
 // const count = ref(0)
 
@@ -17,8 +16,9 @@ export default defineComponent({
     console.log('authStore.isLogin', authStore.isLogin);
 
     let myName =  '1888';
-    let isLogin = false;
     
+   
+
     const onLogout = () => {
       console.log("onLogout"); 
       
@@ -29,7 +29,7 @@ export default defineComponent({
       window.location.reload();
     };
 
-    return { onLogout };
+    return { onLogout,authStore };
   }
 });
 </script>
@@ -41,11 +41,13 @@ export default defineComponent({
       <a href="https://flowbite.com" class="flex items-center">
         <span class="nav-title">VueBox</span>
       </a>
+      <p> {{ authStore.getIsLogin }}</p>
       <div class="flex md:order-2">
-        <button type="button"  class="btn-login">
+       
+        <button type="button"  v-show="!authStore.getIsLogin" class="btn-login">
           <a href="login">Login</a>
         </button>
-        <button type="button" @click="onLogout" class="btn-logout">Logout</button>
+        <button type="button" v-show="authStore.getIsLogin" @click="onLogout" class="btn-logout">Logout</button>
       </div>
 
       <!-- <div class="nav-items" id="mobile-menu-4">
