@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { useBoxStore } from '../store/box'
 import { ref } from 'vue'
+import { useBoxStore } from '../store/box'
 import { useDraggable } from '@vueuse/core'
+
+import { useRouter } from "vue-router";
+import { useAuthStore } from '../store/auth'
 
 const el = ref()
 const {x, y, style } = useDraggable(el, {
@@ -9,11 +12,18 @@ const {x, y, style } = useDraggable(el, {
 })
 const boxStore = useBoxStore()
 boxStore.updateBox({x},{y})
+
+const router = useRouter();
+const authStore = useAuthStore()
+if(authStore.getIsLogin !== true){
+   router.push({ name: "Login" });
+}
+
 </script>
 
 
 <template>
-  <div ref="el" :style="style" style="position: fixed" class="boxs text-green-500 bg-blue-100 rounded-tr-lg rounded-br-lg rounded-bl-lg w-28 h-28">
+  <div ref="el" :style="style" style="position: fixed" class="text-green-500 bg-blue-100 rounded-tr-lg rounded-bl-lg rounded-br-lg boxs w-28 h-28">
     <h1>BOX0</h1>
     <h5>x: {{x}}</h5>
     <h5>y: {{y}}</h5>
