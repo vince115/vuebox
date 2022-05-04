@@ -41,10 +41,11 @@ button.button{
   z-index: 1;
   background: #FFFFFF;
   max-width: 360px;
-  margin: 0 auto 100px;
+  margin: 80px auto 100px;
   padding: 45px;
   text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
+  @apply rounded
 }
 .form input {
   font-family: "Roboto", sans-serif;

@@ -16,9 +16,7 @@ export default defineComponent({
     console.log('authStore.isLogin', authStore.isLogin);
 
     let myName =  '1888';
-    
    
-
     const onLogout = () => {
       console.log("onLogout"); 
       
@@ -41,7 +39,7 @@ export default defineComponent({
       <a href="https://flowbite.com" class="flex items-center">
         <span class="nav-title">VueBox</span>
       </a>
-      <p> {{ authStore.getIsLogin }}</p>
+      
       <div class="flex md:order-2">
        
         <button type="button"  v-show="!authStore.getIsLogin" class="btn-login">
@@ -50,24 +48,16 @@ export default defineComponent({
         <button type="button" v-show="authStore.getIsLogin" @click="onLogout" class="btn-logout">Logout</button>
       </div>
 
-      <!-- <div class="nav-items" id="mobile-menu-4">
+      <div class="nav-items" id="mobile-menu-4">
         <ul class="nav-item-ul">
           <li>
-            <a href="home" class="nav-item-li-a">Home</a>
+            <router-link to="/" class="nav-item-li-a">Home</router-link>
           </li>
           <li>
-            <a href="box" class="nav-item-li-a">Box</a>
-          </li>
-          <li>
-            <a href="user" class="nav-item-li-a">User</a>
-          </li>
-          <li>
-            <a href="test" class="nav-item-li-a">Test</a>
+            <router-link to="/box" class="nav-item-li-a">Box</router-link> 
           </li>
         </ul>
-      </div> -->
-
-  
+      </div>
     </div>
   </nav>
 </template>

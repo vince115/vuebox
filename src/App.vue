@@ -12,19 +12,16 @@ const authStore = useAuthStore()
 <template>
 
   <Navigation msg="Hello Vue 3 + TypeScript + Vite" />
-  <div>Store: {{ userStore.fullName }}</div>
-  <div> x: {{ boxStore.xyPosition.x.x}}, y: {{ boxStore.xyPosition.y.y}}</div>
-  <div> Auth: {{ authStore.getIsLogin }} </div>
-
+  <div v-show="authStore.getIsLogin"> x: {{ boxStore.xyPosition.x.x}}, y: {{ boxStore.xyPosition.y.y}}</div>
  
 
-  <div id="nav">
+  <!-- <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/box">Box</router-link> | 
     <router-link to="/user">User</router-link> |    
     <router-link to="/test">Test</router-link>
-  </div>
-  <router-view />
+  </div>-->
+  <router-view /> 
 
 </template>
 
