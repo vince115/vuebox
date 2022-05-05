@@ -1,5 +1,6 @@
-import { defineStore } from 'pinia';
-import axios from 'axios';
+import { defineStore } from 'pinia'
+import { login } from '../api/auth'
+import axios from 'axios'
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -11,26 +12,28 @@ export const useAuthStore = defineStore({
         isLogin: false
     }
   },
+  persist:{
+    key:'token',
+    paths:['token']
+  },
   getters: {
-    getToken:(state)=>{
-      return state.token
-    },
-    getIsLogin:(state) =>{
-      return state.isLogin
-    }
+    // getToken:(state)=>{
+    //   return state.token
+    // },
+    // getIsLogin:(state) =>{
+    //   return state.isLogin
+    // }
   },
   actions: {
-
     async login(params:object){
       //get
       await axios.get('api');  
       //post
       console.log('params',params);
       const axiosResponse = await axios.post('api/login', params)
-      
-      let myparams = JSON.parse(JSON.stringify(params))
-      console.log('params.username',myparams.username)
-      this.username = myparams.username
+      // let myparams = JSON.parse(JSON.stringify(params))
+      // console.log('params.username',myparams.username)
+      // this.username = myparams.username
       
       if (axiosResponse){
         //const token = `${axiosResponse.token}`;

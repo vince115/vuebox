@@ -1,31 +1,56 @@
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref, reactive } from "vue"
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
-import { useErrorStore } from '../store/error'
+import { reg_email, reg_pwd } from "../utils/validate"
 
-const form = ref({});
+// const form = ref({});
 const loading = ref(false);
 const router = useRouter();
-const error = useErrorStore();
+const userInfo = JSON.parse(JSON.stringify(reactive({ username:'',password:'' })))
+const onValidate = (userInfo:any, key:string) => {
+  
+  let checkEmail = reg_email(userInfo.username)
+  let checkPWD = reg_pwd(userInfo.password)
+  const arr =[checkEmail, checkPWD]
+  // 驗證未通過則顯示msg內的訊息
+  switch (key) {
+    case 'email':
+          checkEmail == true ? userInfo.username = userInfo.username : userInfo.username = 'Email格式錯誤或未輸入'
+          break
+    case 'pwd':
+          checkPWD == true ? userInfo.password = userInfo.password : userInfo.password = '密碼格式錯誤或未輸入'
+          break
+  }
+  
+  let result = arr.find((item) => {
+        return item == false // 尋找array中的false
+      })
+  // result == undefined ? this.submitDisabled = false : this.submitDisabled = true
+  console.log('form: ', arr, result)
 
-const onLoginSubmit =()=>{
-loading.value = !loading.value;
-
-  useAuthStore()
-    .login(form.value)
-    .then(() => router.push({ name: "Home" }))
-    .catch(() => (loading.value = !loading.value));
-
-    console.log('form',form)
 }
+
+const onLogin = async(userInfo:object)=>{
+  console.log('userInfo2',userInfo)
+  loading.value = true;
+  try{
+    await useAuthStore().login(userInfo)
+
+  }catch(error){ 
+  //    
+  }
+   router.push({ name: "Home" });
+}
+
+
 </script>
 
 <template>
   <div class="login">
-  <form @submit.prevent="onLoginSubmit" class="form">
-    <input type="text" id="username" placeholder="username" v-model="form.username"  autocomplete="username"/>
-    <input type="password" id="password" placeholder="password" v-model="form.password" autocomplete="current-password" />
+  <form @submit.prevent="onLogin(userInfo)" class="form">
+    <input type="text" id="username" placeholder="username" v-model="userInfo.username" @change="onValidate(userInfo, 'email')" autocomplete="username"/>
+    <input type="password" id="password" placeholder="password" v-model="userInfo.password" @change="onValidate(userInfo, 'pwd')" autocomplete="current-password" />
     <button type="submit" class="button">login</button>
     <p class="message">Not registered? <a href="#">Create an account</a></p>
   </form>

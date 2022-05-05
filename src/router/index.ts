@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../store/auth'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Box from '../views/Box.vue'
-import User from '../views/User.vue'
-import Test from '../views/Test.vue'
+
 const routes =[
     {
         path:'/',
@@ -19,23 +19,20 @@ const routes =[
         path:'/box',
         name:'Box',
         component: Box
-    },
-    {
-        path:'/user',
-        name:'User',
-        component: User
-    },
-    {
-        path:'/test',
-        name:'test',
-        component: Test
-    }   
+    } 
 ]
-
 
 const router = createRouter({
     history: createWebHistory('/vuebox/'),
     routes
+})
+
+router.beforeEach((to)=>{
+
+    if(to.name =='Login' && !useAuthStore().token){
+        return { name:'Login' }
+    }
+    
 })
 
 export default router;

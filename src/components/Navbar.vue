@@ -15,14 +15,10 @@ export default defineComponent({
     console.log('authStore', authStore);
     console.log('authStore.isLogin', authStore.isLogin);
 
-    let myName =  '1888';
    
-    const onLogout = () => {
+    const onLogout = async() => {
       console.log("onLogout"); 
-      
-      authStore.setIsLogin(false);
-      localStorage.setItem('isLogin', 'false');
-      localStorage.removeItem("token");
+      await useAuthStore().Logout();
       router.push({ name: "Login" });
       window.location.reload();
     };
