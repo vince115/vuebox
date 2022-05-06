@@ -28,11 +28,19 @@ const router = createRouter({
 })
 
 router.beforeEach((to)=>{
+    console.log(877)
+    //console.log('useAuthStore().token',useAuthStore().token)
 
-    // if(to.name =='Login' && !useAuthStore().token){
+    // if(to.name !=='Login' && !useAuthStore().token){
     //     //return { name:'Login' }
-    //     router.push({ name: "Home" });
+    //     router.push({ name: "Login" });
     // }
+
+    // if(!useAuthStore().token && to.name !== 'Login'){
+    //     router.push({ name: "Login" })
+    // }else{
+    //     router.push({ name:'Home'})
+    // } 
     
 })
 

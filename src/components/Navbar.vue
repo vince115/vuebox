@@ -45,10 +45,10 @@ export default defineComponent({
       
       <div class="flex md:order-2">
        
-        <button type="button"   class="btn-login">
+        <button type="button"   class="btn-login" v-show="!authStore.isLogin">
           <router-link to="/login">Login</router-link>
         </button>
-        <button type="button" @click="onLogout" class="btn-logout">Logout</button>
+        <button type="button" @click="onLogout" class="btn-logout" v-show="authStore.isLogin">Logout</button>
       </div>
 
       <div class="nav-items" id="mobile-menu-4">

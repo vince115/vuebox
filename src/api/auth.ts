@@ -7,3 +7,6 @@ export const apiAuth = (data:any) => {
         data, 
     })
 }
+
+//const axiosResponse = await axios.post('api/login', params)
+// let myparams = JSON.parse(JSON.stringify(params))

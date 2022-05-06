@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/auth";
 
 
 const service = axios.create({
-    baseURL: 'http://locahost:3000/api',
+    baseURL: 'http://locahost:3000',
     headers: { 
         'Content-Type': 'application/json' 
     },
@@ -13,7 +13,9 @@ const service = axios.create({
   });
 
 service.interceptors.request.use((config: AxiosRequestConfig)=>{ 
+    console.log(611)
     const authStore = useAuthStore();
+    
     if(authStore.token){
         config.headers
     }
@@ -23,12 +25,21 @@ service.interceptors.request.use((config: AxiosRequestConfig)=>{
 });
 
 service.interceptors.response.use((response: AxiosResponse) => {
-    const status = response.status
+    console.log(612)
+    const authStore = useAuthStore();
+    
+    //const status = response.status
     // if (status < 200 || status >= 300) {
     // }
-    // return response
-    return Promise.resolve(response)
+    // return response       
+    //token
+    if (response.headers) {
+        console.log(613)
+        console.log('response.headers',response.headers)
+        authStore.token = response.headers.authorization.split(" ")[1];
+    }
 
+    return Promise.resolve(response)
     },(error: AxiosError) => {
         if (error.response){
             switch (error.response.status) {

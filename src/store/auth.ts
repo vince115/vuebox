@@ -17,8 +17,8 @@ export const useAuthStore = defineStore({
     paths:['token']
   },
   getters: {
-    // getToken:(state)=>{
-    //   return state.token
+    // token:(state)=>{
+    //  return state.token
     // },
     getIsLogin:(state) =>{
       return state.isLogin
@@ -26,22 +26,20 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async toLogin(params:any){
-      console.log(222);
+      console.log(622);
       //get
-      
-      await axios.get('api');  
+      await axios.get('api'); 
+
       //post
       //await apiAuth(params);
-
       console.log('params',params);
       const axiosResponse = await axios.post('api/login', params)
-      // // let myparams = JSON.parse(JSON.stringify(params))
-      // // console.log('params.username',myparams.username)
+      // // // let myparams = JSON.parse(JSON.stringify(params))
+      // // // console.log('params.username',myparams.username)
       if (axiosResponse){
-
-      // const token = `${axiosResponse.token}`;
-      //   console.log('axiosResponse',axiosResponse);
-      //   console.log('axiosResponse.isLogin',axiosResponse.data.isLogin);
+      // // const token = `${axiosResponse.token}`;
+      // //   console.log('axiosResponse',axiosResponse);
+      // //   console.log('axiosResponse.isLogin',axiosResponse.data.isLogin);
          localStorage.setItem("token",'Bearer ohmytoken');
          this.isLogin = axiosResponse.data.isLogin
       }
