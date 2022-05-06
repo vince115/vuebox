@@ -10,20 +10,27 @@ export default defineComponent({
   setup() {
     let token = localStorage.getItem("token");
     const router = useRouter();
-    const authStore = useAuthStore();
+    
     console.log("onNavLoad");
+
+    const authStore = useAuthStore();
     console.log('authStore', authStore);
     console.log('authStore.isLogin', authStore.isLogin);
-
    
     const onLogout = async() => {
+      
       console.log("onLogout"); 
-      await useAuthStore().Logout();
+      try{
+          await useAuthStore().Logout();
+          console.log(444); 
+      }catch(error){ 
+      //    
+      }
       router.push({ name: "Login" });
-      window.location.reload();
+      //window.location.reload();
     };
 
-    return { onLogout,authStore };
+    return { onLogout, authStore };
   }
 });
 </script>
@@ -38,10 +45,10 @@ export default defineComponent({
       
       <div class="flex md:order-2">
        
-        <button type="button"  v-show="!authStore.getIsLogin" class="btn-login">
-          <a href="login">Login</a>
+        <button type="button"   class="btn-login">
+          <router-link to="/login">Login</router-link>
         </button>
-        <button type="button" v-show="authStore.getIsLogin" @click="onLogout" class="btn-logout">Logout</button>
+        <button type="button" @click="onLogout" class="btn-logout">Logout</button>
       </div>
 
       <div class="nav-items" id="mobile-menu-4">

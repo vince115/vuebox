@@ -15,9 +15,10 @@ export const handlers = [
 
     const userInfo = JSON.parse(JSON.stringify(req.body))
     const { username, password } = userInfo
-    //console.log('userInfo',userInfo)
-    //console.log('username',username)
-    //console.log('password',password)
+    console.log(999)
+    console.log('userInfo',userInfo)
+    console.log('username',username)
+    console.log('password',password)
         if (username == 'abc@gmail.com' && password == 'Abc1234'){
            console.log('帳密吻合');
            return res(
@@ -43,5 +44,16 @@ export const handlers = [
 
         }
   }),
+
+  rest.post('api/logout', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json({
+        code: 200,
+        msg:'成功',
+        isLogin: false
+      }),
+    )
+  })
 
 ]

@@ -29,9 +29,10 @@ const router = createRouter({
 
 router.beforeEach((to)=>{
 
-    if(to.name =='Login' && !useAuthStore().token){
-        return { name:'Login' }
-    }
+    // if(to.name =='Login' && !useAuthStore().token){
+    //     //return { name:'Login' }
+    //     router.push({ name: "Home" });
+    // }
     
 })
 

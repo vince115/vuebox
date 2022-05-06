@@ -2,7 +2,7 @@ import axios from 'axios';
 import { AxiosRequestConfig, AxiosResponse, AxiosError }from 'axios';
 import { useAuthStore } from "../store/auth";
 
-const authStore = useAuthStore();
+
 
 const service = axios.create({
     baseURL: 'http://locahost:3000/api',
@@ -13,6 +13,7 @@ const service = axios.create({
   });
 
 service.interceptors.request.use((config: AxiosRequestConfig)=>{ 
+    const authStore = useAuthStore();
     if(authStore.token){
         config.headers
     }
@@ -49,27 +50,28 @@ service.interceptors.response.use((response: AxiosResponse) => {
     }
 );
 
+export default service;
 
-export default function(method:string , url:string , data = null, config:any) {
-    method = method.toLowerCase();
-    switch (method) {
-        //Read
-        case "get":
-            return service.get(url, { params: data });
-        //Create  
-        case "post":
-            return service.post(url, data, config);
-        //Upadate
-        case "put":
-            return service.put(url, data);
-        //Delete
-        case "delete":
-            return service.delete(url, { params: data });
-        //UpadateAll   
-        case "patch":
-            return service.patch(url, data);
-        default:
-            console.log(`未知的 method: ${method}`);
-        return false;
-    }
-  }
+// export default function(method:string , url:string , data = null, config:any) {
+//     method = method.toLowerCase();
+//     switch (method) {
+//         //Read
+//         case "get":
+//             return service.get(url, { params: data });
+//         //Create  
+//         case "post":
+//             return service.post(url, data, config);
+//         //Upadate
+//         case "put":
+//             return service.put(url, data);
+//         //Delete
+//         case "delete":
+//             return service.delete(url, { params: data });
+//         //UpadateAll   
+//         case "patch":
+//             return service.patch(url, data);
+//         default:
+//             console.log(`未知的 method: ${method}`);
+//         return false;
+//     }
+//   }

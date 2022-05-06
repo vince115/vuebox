@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { login } from '../api/auth'
+import { apiAuth }  from '../api/auth'
 import axios from 'axios'
 
 export const useAuthStore = defineStore({
@@ -20,31 +20,35 @@ export const useAuthStore = defineStore({
     // getToken:(state)=>{
     //   return state.token
     // },
-    // getIsLogin:(state) =>{
-    //   return state.isLogin
-    // }
+    getIsLogin:(state) =>{
+      return state.isLogin
+    }
   },
   actions: {
-    async login(params:object){
+    async toLogin(params:any){
+      console.log(222);
       //get
+      
       await axios.get('api');  
       //post
+      //await apiAuth(params);
+
       console.log('params',params);
       const axiosResponse = await axios.post('api/login', params)
-      // let myparams = JSON.parse(JSON.stringify(params))
-      // console.log('params.username',myparams.username)
-      // this.username = myparams.username
-      
+      // // let myparams = JSON.parse(JSON.stringify(params))
+      // // console.log('params.username',myparams.username)
       if (axiosResponse){
-        //const token = `${axiosResponse.token}`;
-        console.log('axiosResponse',axiosResponse);
-        console.log('axiosResponse.isLogin',axiosResponse.data.isLogin);
-        this.isLogin = axiosResponse.data.isLogin
+
+      // const token = `${axiosResponse.token}`;
+      //   console.log('axiosResponse',axiosResponse);
+      //   console.log('axiosResponse.isLogin',axiosResponse.data.isLogin);
+         localStorage.setItem("token",'Bearer ohmytoken');
+         this.isLogin = axiosResponse.data.isLogin
       }
-
-
     },
-    async logout(){
+    
+    async Logout(){
+      console.log(333);
       //post
       const axiosResponse = (await axios.post("api/logout")).data;
       if (axiosResponse){

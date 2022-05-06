@@ -22,7 +22,6 @@ const onValidate = (userInfo:any, key:string) => {
           checkPWD == true ? userInfo.password = userInfo.password : userInfo.password = '密碼格式錯誤或未輸入'
           break
   }
-  
   let result = arr.find((item) => {
         return item == false // 尋找array中的false
       })
@@ -32,12 +31,13 @@ const onValidate = (userInfo:any, key:string) => {
 }
 
 const onLogin = async(userInfo:object)=>{
-  console.log('userInfo2',userInfo)
+  console.log('userInfo',userInfo)
   loading.value = true;
   try{
-    await useAuthStore().login(userInfo)
-
+    await useAuthStore().toLogin(userInfo)
+    console.log(111)
   }catch(error){ 
+    console.log(404)
   //    
   }
    router.push({ name: "Home" });
