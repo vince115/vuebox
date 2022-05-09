@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue"
+import { ref, reactive, watch, watchEffect, defineComponent } from "vue"
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
+import { useErrorStore } from '../store/error'
 // import { nextTick } from 'vue'
 import { reg_email, reg_pwd } from "../utils/validate"
 
+  
 const loading = ref(false);
 const router = useRouter();
 
@@ -12,7 +14,6 @@ const userInfo = JSON.parse(JSON.stringify(reactive({
   username: { value: '', msg: '' },
   password: { value: '', msg: '' }
 })))
-
 
 const onValidate = (userInfo:any, key:string) => {
   
@@ -25,16 +26,49 @@ const onValidate = (userInfo:any, key:string) => {
           checkEmail == true ? userInfo.username.msg = '' : userInfo.username.msg = 'Email格式錯誤或未輸入'
           break
     case 'pwd':
-          checkPWD == true ? userInfo.password.msg = '' : userInfo.password.msg = '密碼格式錯誤或未輸入'
+          checkPWD == true ? userInfo.password.msg = '' : userInfo.password.msg = '密碼格式錯誤或未輸入'   
           break
   }
-  let result = arr.find((item) => {
-        return item == false // 尋找array中的false
-      })
-  // result == undefined ? this.submitDisabled = false : this.submitDisabled = true
-  console.log('form: ', arr, result)
+
   
+  let result = arr.find((item) => {
+      return item == false // 尋找array中的false
+  })
+
+  //console.log('userInfo.username.msg', userInfo.username.msg)  
+  // watch(() => userInfo.username.msg, (nV:any, oV:any) => {
+  //     console.log('nV', nV)
+  //     console.log('oV', oV)
+  //     return nV
+  //   }, {
+  //     immediate: true
+  //   }
+    
+  //   )
+  // return {
+  //   userInfo
+  // }
+
+  const errStore = useErrorStore()
+  watchEffect(() => errStore.updateErr(userInfo.username.msg));
+   return {
+    userInfo
+  }
+  // watchEffect(() => {
+  //   console.log("Value: " + userInfo.username.msg)
+  //   let MyErr =''
+  //   return MyErr = userInfo.username.msg
+  //   })
+  // return {
+  //      userInfo, 
+  // }
+// const userInfo = JSON.parse(JSON.stringify(reactive({ 
+//   username: { value: '', msg: '' },
+//   password: { value: '', msg: '' }
+// }))
 }
+
+
 
 const onLogin = async(userInfo:any)=>{
   console.log(111)
@@ -47,9 +81,7 @@ const onLogin = async(userInfo:any)=>{
     console.log(104)
     return error
   }
-   
 }
-
 
 </script>
 
@@ -57,7 +89,9 @@ const onLogin = async(userInfo:any)=>{
   <div class="login">
   <form @submit.prevent="onLogin(userInfo)" class="form">
     <input type="text" id="username" placeholder="username" v-model="userInfo.username.value"  @change="onValidate(userInfo, 'email')" autocomplete="username.value"/>
-    <p class="text-xs text-red-500 h-7">{{  userInfo.username.msg }}</p>
+    <!-- <p class="text-xs text-red-500 h-7">{{ userInfo.username.msg }}</p> -->
+    <p class="text-xs text-red-500 h-7" v-bind="nV">{{ useErrorStore().getMsg }}</p>
+    <!-- <p class="text-xs text-red-500 h-7">{{ userInfo }}</p> -->
 <!-- <v-alert   prominent density="compact"
       type="error"
       variant="outlined">I'm Alert Message</v-alert> -->
