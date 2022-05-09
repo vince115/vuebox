@@ -10,15 +10,13 @@ export default defineComponent({
   setup() {
     let token = localStorage.getItem("token");
     const router = useRouter();
-    
-    console.log("onNavLoad");
+    //console.log("onNavLoad");
 
     const authStore = useAuthStore();
     console.log('authStore', authStore);
     console.log('authStore.isLogin', authStore.isLogin);
    
-    const onLogout = async() => {
-      
+    const onLogout = async() => {     
       console.log("onLogout"); 
       try{
           await useAuthStore().Logout();
@@ -67,11 +65,14 @@ export default defineComponent({
 
 <style>
 .nav-navbar {
-  @apply bg-white 
-    border-gray-200 
+  @apply bg-blue-400
+    shadow-lg 
+    border-b-[1px]
+    border-gray-400
     px-2
-    py-2.5 
-    bg-blue-400;
+    py-2 
+    h-[60px];
+    
 }
 .nav-container {
   @apply container 

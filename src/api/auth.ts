@@ -2,7 +2,7 @@ import apiService from '../api/api';
 export const apiAuth = (data:any) => {
     console.log(777)
     apiService({
-        url: "api/login",
+        url: "/login",
         method: "post",
         data, 
     })

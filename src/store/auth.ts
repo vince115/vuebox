@@ -7,8 +7,8 @@ export const useAuthStore = defineStore({
   state: () => {   
     return {
         token: null,
-        username: '',
-        password: '',
+        username: { value: '', msg: '' },
+        password: { value: '', msg: '' },
         isLogin: false
     }
   },
@@ -26,24 +26,32 @@ export const useAuthStore = defineStore({
   },
   actions: {
     async toLogin(params:any){
-      console.log(622);
+      console.log(611)
       //get
-      await axios.get('api'); 
-
-      //post
-      //await apiAuth(params);
-      console.log('params',params);
-      const axiosResponse = await axios.post('api/login', params)
-      // // // let myparams = JSON.parse(JSON.stringify(params))
-      // // // console.log('params.username',myparams.username)
-      if (axiosResponse){
-      // // const token = `${axiosResponse.token}`;
-      // //   console.log('axiosResponse',axiosResponse);
-      // //   console.log('axiosResponse.isLogin',axiosResponse.data.isLogin);
-         localStorage.setItem("token",'Bearer ohmytoken');
-         this.isLogin = axiosResponse.data.isLogin
+      try{
+        console.log(612)
+        await axios.get('api') 
       }
-    },
+      catch(error){
+        console.log(614)
+        console.log(error) 
+      }
+      //post
+      try{
+        const axiosResponse = await axios.post('api/login', params)
+        // // // let myparams = JSON.parse(JSON.stringify(params))
+        // // // console.log('params.username',myparams.username)
+        if (axiosResponse){  
+            localStorage.setItem("token",'Bearer ohmytoken');
+            this.isLogin = axiosResponse.data.isLogin
+          }
+      }
+      catch(error){
+        console.log(401)
+        console.log(error); 
+      }
+
+    },  
     
     async Logout(){
       console.log(333);
@@ -59,9 +67,9 @@ export const useAuthStore = defineStore({
     //   this.user = (await axios.get("api/me")).data;
     //   this.loggedIn = true;
     // }, 
-    setIsLogin(state:any) {
-      this.state = state
-    }
+    // setIsLogin(state:any) {
+    //   this.state = state
+    // }
   
 
   }

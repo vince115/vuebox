@@ -2,24 +2,30 @@
 import { ref, reactive } from "vue"
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
+// import { nextTick } from 'vue'
 import { reg_email, reg_pwd } from "../utils/validate"
 
-// const form = ref({});
 const loading = ref(false);
 const router = useRouter();
-const userInfo = JSON.parse(JSON.stringify(reactive({ username:'',password:'' })))
+
+const userInfo = JSON.parse(JSON.stringify(reactive({ 
+  username: { value: '', msg: '' },
+  password: { value: '', msg: '' }
+})))
+
+
 const onValidate = (userInfo:any, key:string) => {
   
-  let checkEmail = reg_email(userInfo.username)
-  let checkPWD = reg_pwd(userInfo.password)
+  let checkEmail = reg_email(userInfo.username.value)
+  let checkPWD = reg_pwd(userInfo.password.value)
   const arr =[checkEmail, checkPWD]
   // 驗證未通過則顯示msg內的訊息
   switch (key) {
     case 'email':
-          checkEmail == true ? userInfo.username = userInfo.username : userInfo.username = 'Email格式錯誤或未輸入'
+          checkEmail == true ? userInfo.username.msg = '' : userInfo.username.msg = 'Email格式錯誤或未輸入'
           break
     case 'pwd':
-          checkPWD == true ? userInfo.password = userInfo.password : userInfo.password = '密碼格式錯誤或未輸入'
+          checkPWD == true ? userInfo.password.msg = '' : userInfo.password.msg = '密碼格式錯誤或未輸入'
           break
   }
   let result = arr.find((item) => {
@@ -27,20 +33,21 @@ const onValidate = (userInfo:any, key:string) => {
       })
   // result == undefined ? this.submitDisabled = false : this.submitDisabled = true
   console.log('form: ', arr, result)
-
+  
 }
 
-const onLogin = async(userInfo:object)=>{
-  console.log('userInfo',userInfo)
+const onLogin = async(userInfo:any)=>{
+  console.log(111)
   loading.value = true;
   try{
     await useAuthStore().toLogin(userInfo)
-    console.log(111)
+    console.log(123)
+    router.push({ name: "Home" });
   }catch(error){ 
-    console.log(404)
-  //    
+    console.log(104)
+    return error
   }
-   router.push({ name: "Home" });
+   
 }
 
 
@@ -49,8 +56,14 @@ const onLogin = async(userInfo:object)=>{
 <template>
   <div class="login">
   <form @submit.prevent="onLogin(userInfo)" class="form">
-    <input type="text" id="username" placeholder="username" v-model="userInfo.username" @change="onValidate(userInfo, 'email')" autocomplete="username"/>
-    <input type="password" id="password" placeholder="password" v-model="userInfo.password" @change="onValidate(userInfo, 'pwd')" autocomplete="current-password" />
+    <input type="text" id="username" placeholder="username" v-model="userInfo.username.value"  @change="onValidate(userInfo, 'email')" autocomplete="username.value"/>
+    <p class="text-xs text-red-500 h-7">{{  userInfo.username.msg }}</p>
+<!-- <v-alert   prominent density="compact"
+      type="error"
+      variant="outlined">I'm Alert Message</v-alert> -->
+    <input type="password" id="password" placeholder="password" v-model="userInfo.password.value" @change="onValidate(userInfo, 'pwd')" autocomplete="current-password" />
+   
+    <p class="text-xs text-red-500 h-7">{{ userInfo.password.msg }}</p>
     <button type="submit" class="button">login</button>
     <p class="message">Not registered? <a href="#">Create an account</a></p>
   </form>
@@ -61,78 +74,72 @@ const onLogin = async(userInfo:object)=>{
 button.button{
   @apply m-0 px-4 py-2 text-white bg-cyan-500 rounded
 }
-.form {
-  position: relative;
-  z-index: 1;
-  background: #FFFFFF;
-  max-width: 360px;
-  margin: 80px auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
-  @apply rounded
+.form{
+  @apply 
+  relative 
+  rounded
+  z-10
+  bg-zinc-50
+  max-w-[360px]
+  mt-[80px]
+  mx-auto
+  mb-[100px]
+  p-[45px] 
+  text-center
+  border-[1px]
+  border-zinc-200
+  shadow-lg
 }
 .form input {
-  font-family: "Roboto", sans-serif;
-  outline: 0;
-  background: #f2f2f2;
-  width: 100%;
-  border: 0;
-  margin: 0 0 15px;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
+  @apply m-0 
+  p-2.5
+  w-full
+  bg-[#f2f2f2] 
+  box-border
+  text-base
+  border-[1px]
+  border-zinc-100
+} 
 .form button {
   font-family: "Roboto", sans-serif;
   text-transform: uppercase;
-  outline: 0;
-  background: #4CAF50;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
+  @apply mt-3 p-3
+  w-full
+  text-base
 }
-.form button:hover,.form button:active,.form button:focus {
-  background: #43A047;
+.form button:hover,
+.form button:active,
+.form button:focus {
+  @apply bg-[#43A047]
 }
 .form .message {
-  margin: 15px 0 0;
-  color: #b3b3b3;
-  font-size: 12px;
+  @apply m-0 mb-4
+  text-[#b3b3b3]
+  text-xs
 }
 .form .message a {
-  color: #4CAF50;
-  text-decoration: none;
-}
+  @apply text-[#4CAF50]
+  no-underline
+} 
 .form .register-form {
-  display: none;
+  @apply object-none
 }
 .container {
-  position: relative;
-  z-index: 1;
-  max-width: 300px;
-  margin: 0 auto;
+  @apply relative
+  z-10
+  m-0 mx-auto
+  max-w-[300px]
 }
 .container:before, .container:after {
-  content: "";
-  display: block;
-  clear: both;
+  @apply block clear-both content-none
 }
 .container .info {
-  margin: 50px auto;
-  text-align: center;
+  @apply mx-auto my-12 text-center
 }
 .container .info h1 {
-  margin: 0 0 15px;
-  padding: 0;
-  font-size: 36px;
-  font-weight: 300;
-  color: #1a1a1a;
+  @apply m-0 mb-4 p-0
+  text-base
+  text-[#1a1a1a]
 }
 .container .info span {
   color: #4d4d4d;

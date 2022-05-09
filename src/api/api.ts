@@ -5,7 +5,7 @@ import { useAuthStore } from "../store/auth";
 
 
 const service = axios.create({
-    baseURL: 'http://locahost:3000',
+    baseURL: 'http://locahost:3000/api',
     headers: { 
         'Content-Type': 'application/json' 
     },
