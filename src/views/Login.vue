@@ -3,20 +3,16 @@ import { ref, reactive, watch, watchEffect, defineComponent } from "vue"
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../store/auth'
 import { useErrorStore } from '../store/error'
-// import { nextTick } from 'vue'
 import { reg_email, reg_pwd } from "../utils/validate"
-
   
 const loading = ref(false);
 const router = useRouter();
-
 const userInfo = JSON.parse(JSON.stringify(reactive({ 
   username: { value: '', msg: '' },
   password: { value: '', msg: '' }
 })))
 
 const onValidate = (userInfo:any, key:string) => {
-  
   let checkEmail = reg_email(userInfo.username.value)
   let checkPWD = reg_pwd(userInfo.password.value)
   const arr =[checkEmail, checkPWD]
@@ -29,75 +25,35 @@ const onValidate = (userInfo:any, key:string) => {
           checkPWD == true ? userInfo.password.msg = '' : userInfo.password.msg = '密碼格式錯誤或未輸入'   
           break
   }
-
-  
   let result = arr.find((item) => {
       return item == false // 尋找array中的false
   })
-
-  //console.log('userInfo.username.msg', userInfo.username.msg)  
-  // watch(() => userInfo.username.msg, (nV:any, oV:any) => {
-  //     console.log('nV', nV)
-  //     console.log('oV', oV)
-  //     return nV
-  //   }, {
-  //     immediate: true
-  //   }
-    
-  //   )
-  // return {
-  //   userInfo
-  // }
-
   const errStore = useErrorStore()
-  watchEffect(() => errStore.updateErr(userInfo.username.msg));
+  watchEffect(() => errStore.updateErr_username(userInfo.username.msg));
+  watchEffect(() => errStore.updateErr_password(userInfo.password.msg));
    return {
     userInfo
   }
-  // watchEffect(() => {
-  //   console.log("Value: " + userInfo.username.msg)
-  //   let MyErr =''
-  //   return MyErr = userInfo.username.msg
-  //   })
-  // return {
-  //      userInfo, 
-  // }
-// const userInfo = JSON.parse(JSON.stringify(reactive({ 
-//   username: { value: '', msg: '' },
-//   password: { value: '', msg: '' }
-// }))
 }
 
-
-
 const onLogin = async(userInfo:any)=>{
-  console.log(111)
   loading.value = true;
   try{
     await useAuthStore().toLogin(userInfo)
-    console.log(123)
     router.push({ name: "Home" });
   }catch(error){ 
-    console.log(104)
     return error
   }
 }
-
 </script>
 
 <template>
   <div class="login">
   <form @submit.prevent="onLogin(userInfo)" class="form">
     <input type="text" id="username" placeholder="username" v-model="userInfo.username.value"  @change="onValidate(userInfo, 'email')" autocomplete="username.value"/>
-    <!-- <p class="text-xs text-red-500 h-7">{{ userInfo.username.msg }}</p> -->
-    <p class="text-xs text-red-500 h-7" v-bind="nV">{{ useErrorStore().getMsg }}</p>
-    <!-- <p class="text-xs text-red-500 h-7">{{ userInfo }}</p> -->
-<!-- <v-alert   prominent density="compact"
-      type="error"
-      variant="outlined">I'm Alert Message</v-alert> -->
+    <p class="pt-1 text-xs text-red-500 h-7">{{ useErrorStore().getMsg_username }}</p>
     <input type="password" id="password" placeholder="password" v-model="userInfo.password.value" @change="onValidate(userInfo, 'pwd')" autocomplete="current-password" />
-   
-    <p class="text-xs text-red-500 h-7">{{ userInfo.password.msg }}</p>
+    <p class="pt-1 text-xs text-red-500 h-7">{{ useErrorStore().getMsg_password }}</p>
     <button type="submit" class="button">login</button>
     <p class="message">Not registered? <a href="#">Create an account</a></p>
   </form>
@@ -176,14 +132,13 @@ button.button{
   text-[#1a1a1a]
 }
 .container .info span {
-  color: #4d4d4d;
-  font-size: 12px;
+  @apply text-[#4d4d4d]
+  text-base
 }
 .container .info span a {
-  color: #000000;
-  text-decoration: none;
+  @apply text-[#000000] no-underline
 }
 .container .info span .fa {
-  color: #EF3B3A;
+  @apply text-[#EF3B3A]
 }
 </style>
