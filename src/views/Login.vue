@@ -8,18 +8,18 @@ import { reg_email, reg_pwd } from "../utils/validate"
 const loading = ref(false);
 const router = useRouter();
 const userInfo = JSON.parse(JSON.stringify(reactive({ 
-  username: { value: '', msg: '' },
+  account: { value: '', msg: '' },
   password: { value: '', msg: '' }
 })))
 
 const onValidate = (userInfo:any, key:string) => {
-  let checkEmail = reg_email(userInfo.username.value)
+  let checkEmail = reg_email(userInfo.account.value)
   let checkPWD = reg_pwd(userInfo.password.value)
   const arr =[checkEmail, checkPWD]
   // 驗證未通過則顯示msg內的訊息
   switch (key) {
     case 'email':
-          checkEmail == true ? userInfo.username.msg = '' : userInfo.username.msg = 'Email格式錯誤或未輸入'
+          checkEmail == true ? userInfo.account.msg = '' : userInfo.account.msg = 'Email格式錯誤或未輸入'
           break
     case 'pwd':
           checkPWD == true ? userInfo.password.msg = '' : userInfo.password.msg = '密碼格式錯誤或未輸入'   
@@ -29,7 +29,7 @@ const onValidate = (userInfo:any, key:string) => {
       return item == false // 尋找array中的false
   })
   const errStore = useErrorStore()
-  watchEffect(() => errStore.updateErr_username(userInfo.username.msg));
+  watchEffect(() => errStore.updateErr_account(userInfo.account.msg));
   watchEffect(() => errStore.updateErr_password(userInfo.password.msg));
    return {
     userInfo
@@ -50,8 +50,8 @@ const onLogin = async(userInfo:any)=>{
 <template>
   <div class="login">
   <form @submit.prevent="onLogin(userInfo)" class="form">
-    <input type="text" id="username" placeholder="username" v-model="userInfo.username.value"  @change="onValidate(userInfo, 'email')" autocomplete="username.value"/>
-    <p class="pt-1 text-xs text-red-500 h-7">{{ useErrorStore().getMsg_username }}</p>
+    <input type="text" id="account" placeholder="account" v-model="userInfo.account.value"  @change="onValidate(userInfo, 'email')" autocomplete="account.value"/>
+    <p class="pt-1 text-xs text-red-500 h-7">{{ useErrorStore().getMsg_account }}</p>
     <input type="password" id="password" placeholder="password" v-model="userInfo.password.value" @change="onValidate(userInfo, 'pwd')" autocomplete="current-password" />
     <p class="pt-1 text-xs text-red-500 h-7">{{ useErrorStore().getMsg_password }}</p>
     <button type="submit" class="button">login</button>
